@@ -35,7 +35,6 @@ window.onload = () => {
   });
 
   const rotate = (dir) => {
-    console.log(dir, 999);
     const imageData = cropper.getImageData();
     console.log("imageData", imageData)
     console.log("    imageData.rotate;", imageData.rotate);
@@ -61,18 +60,36 @@ window.onload = () => {
     false
   );
 
+  const loadImage = path => {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.src = path
+      img.onload = () => {
+        resolve(img)
+      }
+      img.onerror = e => {
+        reject(e)
+      }
+    })
+  }
+
   const watermarkImage = async (originalImage, watermarkImagePath) => {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
+    const tempImage = await loadImage(originalImage)
 
-    const canvasWidth = originalImage.width;
-    const canvasHeight = originalImage.height;
+    const canvasWidth = tempImage.width;
+    const canvasHeight = tempImage.height;
+    console.log("canvasWidth", canvasWidth)
+    console.log("canvasHeight", canvasHeight)
 
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
+    context.drawImage(tempImage, 0, 0, canvasWidth, canvasHeight);
+    // console.log("tempImage", tempImage)
+    // tempImage.src = originalImage;
     // initializing the canvas with the original image
-    context.drawImage(originalImage, 0, 0, canvasWidth, canvasHeight);
 
     // loading the watermark image and transforming it into a pattern
     const result = await fetch(watermarkImagePath);
@@ -90,15 +107,29 @@ window.onload = () => {
 
   const initCropper = () => {
     const croppedImage = document.querySelector("#cropped img");
+    const uploadImage = document.querySelector("#uploaded-img")
     if (cropper) return;
     cropper = new Cropper(croppedImage, {
       aspectRatio: 16 / 9,
       preview: "#previewBox",
+      replace(url){
+        console.log("url", url)
+      },
       crop(event) {
-        // watermarkImage(croppedImage, mark).then((url) => {
-        //   previewBox.src = url;
-        // });
-        // console.log(event.detail.x);
+        const previewImage = document.querySelector("#previewBox img");
+        const previewBox = document.querySelector("#previewBox");
+        // const target = previewImage.src
+        const target = cropper.getCroppedCanvas().toDataURL("image/png")
+        console.log("target", target, mark)
+        // console.log("8777", cropper.getCroppedCanvas().toDataURL("image/png"))
+        watermarkImage(target, mark).then((url) => {
+          console.log("url====", url);
+          previewImage.src = url;
+          console.log("previewImage", previewImage)
+        });
+        console.log("uploadImage.width", uploadImage.width)
+        console.log("uploadImage.height", uploadImage.height)
+        console.log(event.detail.x, "x");
         // console.log(event.detail.y);
         // console.log(event.detail.width);
         // console.log(event.detail.height);
