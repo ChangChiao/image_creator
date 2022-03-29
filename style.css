@@ -20,7 +20,8 @@
 }
 
 #previewBox {
-  width: 500px;
+  width: 100%;
   height: 500px;
+  max-height: 500px;
   overflow: hidden;
 }

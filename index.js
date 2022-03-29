@@ -74,19 +74,20 @@ window.onload = () => {
   }
 
   const watermarkImage = async (originalImage, watermarkImagePath) => {
-    const canvas = document.createElement("canvas");
+    const canvas = originalImage;
     const context = canvas.getContext("2d");
-    const tempImage = await loadImage(originalImage)
+    console.log('context', context)
+    // const tempImage = await loadImage(originalImage)
 
-    const canvasWidth = tempImage.width;
-    const canvasHeight = tempImage.height;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
     console.log("canvasWidth", canvasWidth)
     console.log("canvasHeight", canvasHeight)
 
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    // canvas.width = canvasWidth;
+    // canvas.height = canvasHeight;
 
-    context.drawImage(tempImage, 0, 0, canvasWidth, canvasHeight);
+    // context.drawImage(tempImage, 0, 0, canvasWidth, canvasHeight);
     // console.log("tempImage", tempImage)
     // tempImage.src = originalImage;
     // initializing the canvas with the original image
@@ -95,13 +96,14 @@ window.onload = () => {
     const result = await fetch(watermarkImagePath);
     const blob = await result.blob();
     const image = await createImageBitmap(blob);
+    console.log("wwww", image)
     const pattern = context.createPattern(image, "no-repeat");
 
     // translating the watermark image to the bottom right corner
     context.translate(canvasWidth - image.width, canvasHeight - image.height);
-    context.rect(0, 0, canvasWidth, canvasHeight);
+    // context.rect(0, 0, canvasWidth, canvasHeight);
     context.fillStyle = pattern;
-
+    console.log("ewewewewe");
     return canvas.toDataURL();
   };
 
@@ -115,17 +117,17 @@ window.onload = () => {
       replace(url){
         console.log("url", url)
       },
-      crop(event) {
+      cropend(event) {
         const previewImage = document.querySelector("#previewBox img");
         const previewBox = document.querySelector("#previewBox");
         // const target = previewImage.src
         const target = cropper.getCroppedCanvas().toDataURL("image/png")
-        console.log("target", target, mark)
+        // console.log("target", target, mark)
         // console.log("8777", cropper.getCroppedCanvas().toDataURL("image/png"))
-        watermarkImage(target, mark).then((url) => {
-          console.log("url====", url);
+        watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
+          previewImage.style = "";
           previewImage.src = url;
-          console.log("previewImage", previewImage)
+          // console.log("previewImage", previewImage)
         });
         console.log("uploadImage.width", uploadImage.width)
         console.log("uploadImage.height", uploadImage.height)
