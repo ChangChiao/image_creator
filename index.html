@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="realative min-w-screen min-h-screen flex justify-center items-center">
+        <div id="carousel" class="container mx-auto w-full min-h-[500px] relative flex items-center overflow-hidden scroll-smooth disable-scrollbars snap-x snap-mandatory">
+      <!--  upload image   -->
+          <div class="self-start snap-start upload-container flex-[1_0_100%] w-full h-screen">
+            <div class="flex flex-col items-center mt-[200px]">
+              <div class="w-4/5 flex justify-start">
+                <button id="btn-reupload" class="text-red-500 mr-3">
+                  <i class="fas fa-redo"></i>
+                  <span>重新上傳</span>
+                </button>
+              </div>
+              <div class="w-4/5 h-[500px] flex justify-center items-center bg-gray-100 shadow-lg rounded-md">
+                <input id="upload" class="hidden input-file-button-origin" type="file" accept="image/png, image/jpg, image/jpeg">
+                <button class="input-file-button p-10 text-gray-300 hover:text-gray-600 transition duration-300 ease-out">
+                  <i class="fa-solid fa-cloud-arrow-up text-[64px] "></i>
+                  <span class="block mt-4 text-center text-blue-300">上傳照片</span>
+                </button>
+      <!--  uploaded image preview   -->
+                  <img class="hidden w-full h-full object-contain" id="uploaded-img" src="" alt="">
+              </div>
+              <div class="w-4/5 flex justify-end">
+                <button id="btn-next" class="text-gray-500 hover:text-blue-600 mt-2">
+                  <span>Next</span>
+                  <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+      <!--           <button class="mt-4 disabled:bg-blue-300 bg-blue-600 hover:bg-blue-900 cursor-pointer text-white rounded-md px-10 py-2 transition duration-300 ease-in-out" disabled id="btn-next" >下一步</button> -->
+              </div>
+            </div>
+          </div>
+      <!-- cropping -->
+          <div class="snap-start editing-container flex-[1_0_100%]  w-full h-full">
+            <div class="w-full h-full p-8">
+              <button id="btn-previous" class="text-gray-500 hover:text-blue-600">
+                <i class="fa-solid fa-arrow-left-long"></i>
+                <span>Back</span>
+              </button>
+              <div class="grid grid-cols-12 gap-4 mt-20">
+        <!--  editing buttons  -->
+                <div class="col-span-12 lg:col-span-1 flex lg:flex-col gap-4 editing_button-group">
+                  <button id="rotate-left" class="bg-blue-600 hover:bg-blue-700 text-white">
+                    <i class="fa-solid fa-arrow-rotate-left"></i>
+                  </button>
+                  <button id="rotate-right" class="bg-blue-600 hover:bg-blue-700 text-white">
+                    <i class="fa-solid fa-arrow-rotate-right"></i>
+                  </button>
+                  <button id="ratio-sqaure" class="bg-blue-600 hover:bg-blue-700 text-white">
+                    <span>1:1</span>
+                  </button>
+                  <button id="ratio-rec" class="bg-blue-600 hover:bg-blue-700 text-white">
+                    <span>16:9</span>
+                  </button>
+                  <button id="ratio-free" class="bg-blue-600 hover:bg-blue-700 text-white">
+                    <span>Free</span>
+                  </button>
+                </div>
+                <div class="col-start-1 col-span-12 lg:col-start-2 lg:col-span-6 bg-gray-100 w-full min-w-[400px] h-[500px]">
+                <!-- preview -->
+                  <div id="cropped" class="h-[500px]" ></div>
+                </div>
+                <div class="col-start-1 col-span-12 lg:col-start-2 lg:col-start-8 lg:col-span-5 shadow-lg rounded-md flex items-center">
+                  <img class="border" id="preview"></img>
+                </div>
+              <a class="block text-center col-start-11 col-span-2 mt-4 bg-blue-600 hover:bg-blue-700 cursor-pointer text-white rounded-md py-2" id="download">下載</a>
+                  <img id="watermarkImage" class="mt-5" src="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
