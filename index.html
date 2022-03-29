@@ -7,8 +7,9 @@
     <script src="./index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.css">
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
 </head>
 <body>
@@ -25,7 +26,7 @@
               </div>
               <div class="w-4/5 h-[500px] flex justify-center items-center bg-gray-100 shadow-lg rounded-md">
                 <input id="upload" class="hidden input-file-button-origin" type="file" accept="image/png, image/jpg, image/jpeg">
-                <button class="input-file-button p-10 text-gray-300 hover:text-gray-600 transition duration-300 ease-out">
+                <button id="upload-btn" class="input-file-button p-10 text-gray-300 hover:text-gray-600 transition duration-300 ease-out">
                   <i class="fa-solid fa-cloud-arrow-up text-[64px] "></i>
                   <span class="block mt-4 text-center text-blue-300">上傳照片</span>
                 </button>
@@ -71,7 +72,7 @@
                 <!-- preview -->
                   <div id="cropped" class="h-[500px]" ></div>
                 </div>
-                <div class="col-start-1 col-span-12 lg:col-start-2 lg:col-start-8 lg:col-span-5 shadow-lg rounded-md flex items-center">
+                <div id="previewBox" class="col-start-1 col-span-12 lg:col-start-2 lg:col-start-8 lg:col-span-5 shadow-lg rounded-md flex items-center">
                   <img class="border" id="preview"></img>
                 </div>
               <a class="block text-center col-start-11 col-span-2 mt-4 bg-blue-600 hover:bg-blue-700 cursor-pointer text-white rounded-md py-2" id="download">下載</a>
