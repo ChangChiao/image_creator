@@ -1,6 +1,10 @@
 // const fileType = ["png", "jpg", "jpeg"];
 const mark = "https://hexschool.github.io/escape-cropper/photo.png";
 let cropper = null;
+let imageTemp = {
+    style:"",
+    url:""
+}
 
 window.onload = () => {
   const prevBtn = document.querySelector("#btn-previous");
@@ -117,16 +121,23 @@ window.onload = () => {
       replace(url){
         console.log("url", url)
       },
+      cropstart(){
+        const previewImage = document.querySelector("#previewBox img");
+        cover.src = "";
+      },
       cropend(event) {
         const previewImage = document.querySelector("#previewBox img");
         const previewBox = document.querySelector("#previewBox");
+        const cover = document.querySelector("#cover");
         // const target = previewImage.src
         const target = cropper.getCroppedCanvas().toDataURL("image/png")
+        // imageTemp.style = previewImage.style
+        // imageTemp.src = previewImage.src;
         // console.log("target", target, mark)
         // console.log("8777", cropper.getCroppedCanvas().toDataURL("image/png"))
         watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
-          previewImage.style = "";
-          previewImage.src = url;
+        //   previewImage.style = "";
+            cover.src = url;
           // console.log("previewImage", previewImage)
         });
         console.log("uploadImage.width", uploadImage.width)
