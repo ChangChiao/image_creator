@@ -1,11 +1,7 @@
 // const fileType = ["png", "jpg", "jpeg"];
 const mark = "https://hexschool.github.io/escape-cropper/photo.png";
 let cropper = null;
-let imageTemp = {
-    style:"",
-    url:""
-}
-
+let downloadUrl = "";
 window.onload = () => {
   const prevBtn = document.querySelector("#btn-previous");
   const nextBtn = document.querySelector("#btn-next");
@@ -54,10 +50,10 @@ window.onload = () => {
     "click",
     () => {
         console.log("#download")
-      
+      const cover = document.querySelector("#cover");
       const link = document.createElement('a');
         link.download = 'download.png';
-        link.href = cropper.getCroppedCanvas().toDataURL("image/png");
+        link.href = cover.src;
         link.click();
         link.delete;
     },
@@ -81,39 +77,39 @@ window.onload = () => {
     const canvas = originalImage;
     const context = canvas.getContext("2d");
     console.log('context', context)
-    // const tempImage = await loadImage(originalImage)
 
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
     console.log("canvasWidth", canvasWidth)
     console.log("canvasHeight", canvasHeight)
 
-    // canvas.width = canvasWidth;
-    // canvas.height = canvasHeight;
-
     // context.drawImage(tempImage, 0, 0, canvasWidth, canvasHeight);
     // console.log("tempImage", tempImage)
-    // tempImage.src = originalImage;
     // initializing the canvas with the original image
 
     // loading the watermark image and transforming it into a pattern
     const result = await fetch(watermarkImagePath);
     const blob = await result.blob();
     const image = await createImageBitmap(blob);
-    console.log("wwww", image)
     const pattern = context.createPattern(image, "no-repeat");
+    // context.drawImage(image, 0, 0, 50, 50, canvasWidth - 50, canvasHeight - 50);
 
     // translating the watermark image to the bottom right corner
-    context.translate(canvasWidth - image.width, canvasHeight - image.height);
+    context.translate(canvasWidth - image.width*0.3, canvasHeight - image.height*0.3);
+    context.rect(0, 0, canvasWidth, canvasHeight);
+    // context.translate(canvasWidth - image.width, canvasHeight - image.height);
     // context.rect(0, 0, canvasWidth, canvasHeight);
+    context.rect(0, 0, 300, 300);
+    context.scale(0.3, 0.3)
     context.fillStyle = pattern;
-    console.log("ewewewewe");
-    return canvas.toDataURL();
+    context.fill();
+    return canvas.toDataURL("image/png");
   };
 
   const initCropper = () => {
     const croppedImage = document.querySelector("#cropped img");
     const uploadImage = document.querySelector("#uploaded-img")
+    const cover = document.querySelector("#cover");
     if (cropper) return;
     cropper = new Cropper(croppedImage, {
       aspectRatio: 16 / 9,
@@ -121,28 +117,19 @@ window.onload = () => {
       replace(url){
         console.log("url", url)
       },
+      ready(){
+        watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
+            cover.src = url;
+        });
+      },
       cropstart(){
         const previewImage = document.querySelector("#previewBox img");
         cover.src = "";
       },
       cropend(event) {
-        const previewImage = document.querySelector("#previewBox img");
-        const previewBox = document.querySelector("#previewBox");
-        const cover = document.querySelector("#cover");
-        // const target = previewImage.src
-        const target = cropper.getCroppedCanvas().toDataURL("image/png")
-        // imageTemp.style = previewImage.style
-        // imageTemp.src = previewImage.src;
-        // console.log("target", target, mark)
-        // console.log("8777", cropper.getCroppedCanvas().toDataURL("image/png"))
         watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
-        //   previewImage.style = "";
             cover.src = url;
-          // console.log("previewImage", previewImage)
         });
-        console.log("uploadImage.width", uploadImage.width)
-        console.log("uploadImage.height", uploadImage.height)
-        console.log(event.detail.x, "x");
         // console.log(event.detail.y);
         // console.log(event.detail.width);
         // console.log(event.detail.height);
