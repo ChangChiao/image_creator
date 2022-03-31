@@ -36,7 +36,7 @@ window.onload = () => {
 
   const rotate = (dir) => {
     const imageData = cropper.getImageData();
-    console.log("imageData", imageData)
+    console.log("imageData", imageData);
     console.log("    imageData.rotate;", imageData.rotate);
     const angle = dir > 0 ? 90 : -90;
     // let result = imageData.rotate + angle;
@@ -44,44 +44,47 @@ window.onload = () => {
     //     result = 0;
     // }
     cropper.rotate(angle);
+    watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
+      cover.src = url;
+    });
   };
 
   document.querySelector("#download").addEventListener(
     "click",
     () => {
-        console.log("#download")
+      console.log("#download");
       const cover = document.querySelector("#cover");
-      const link = document.createElement('a');
-        link.download = 'download.png';
-        link.href = cover.src;
-        link.click();
-        link.delete;
+      const link = document.createElement("a");
+      link.download = "download.png";
+      link.href = cover.src;
+      link.click();
+      link.delete;
     },
     false
   );
 
-  const loadImage = path => {
+  const loadImage = (path) => {
     return new Promise((resolve, reject) => {
-      const img = new Image()
-      img.src = path
+      const img = new Image();
+      img.src = path;
       img.onload = () => {
-        resolve(img)
-      }
-      img.onerror = e => {
-        reject(e)
-      }
-    })
-  }
+        resolve(img);
+      };
+      img.onerror = (e) => {
+        reject(e);
+      };
+    });
+  };
 
   const watermarkImage = async (originalImage, watermarkImagePath) => {
     const canvas = originalImage;
     const context = canvas.getContext("2d");
-    console.log('context', context)
+    console.log("context", context);
 
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
-    console.log("canvasWidth", canvasWidth)
-    console.log("canvasHeight", canvasHeight)
+    console.log("canvasWidth", canvasWidth);
+    console.log("canvasHeight", canvasHeight);
 
     // context.drawImage(tempImage, 0, 0, canvasWidth, canvasHeight);
     // console.log("tempImage", tempImage)
@@ -95,12 +98,15 @@ window.onload = () => {
     // context.drawImage(image, 0, 0, 50, 50, canvasWidth - 50, canvasHeight - 50);
 
     // translating the watermark image to the bottom right corner
-    context.translate(canvasWidth - image.width*0.3, canvasHeight - image.height*0.3);
+    context.translate(
+      canvasWidth - image.width * 0.3,
+      canvasHeight - image.height * 0.3
+    );
     context.rect(0, 0, canvasWidth, canvasHeight);
     // context.translate(canvasWidth - image.width, canvasHeight - image.height);
     // context.rect(0, 0, canvasWidth, canvasHeight);
     context.rect(0, 0, 300, 300);
-    context.scale(0.3, 0.3)
+    context.scale(0.3, 0.3);
     context.fillStyle = pattern;
     context.fill();
     return canvas.toDataURL("image/png");
@@ -108,27 +114,28 @@ window.onload = () => {
 
   const initCropper = () => {
     const croppedImage = document.querySelector("#cropped img");
-    const uploadImage = document.querySelector("#uploaded-img")
+    const uploadImage = document.querySelector("#uploaded-img");
     const cover = document.querySelector("#cover");
     if (cropper) return;
     cropper = new Cropper(croppedImage, {
       aspectRatio: 16 / 9,
       preview: "#previewBox",
-      replace(url){
-        console.log("url", url)
+      replace(url) {
+        console.log("url", url);
       },
-      ready(){
+      ready() {
         watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
-            cover.src = url;
+          cover.src = url;
         });
       },
-      cropstart(){
+      cropstart() {
         const previewImage = document.querySelector("#previewBox img");
         cover.src = "";
       },
       cropend(event) {
+        console.log("cropend");
         watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
-            cover.src = url;
+          cover.src = url;
         });
         // console.log(event.detail.y);
         // console.log(event.detail.width);
@@ -139,7 +146,6 @@ window.onload = () => {
       },
     });
   };
-
 
   document.querySelector("#upload-btn").addEventListener(
     "click",
@@ -178,6 +184,9 @@ window.onload = () => {
     "click",
     () => {
       cropper.setAspectRatio(1);
+      watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
+        cover.src = url;
+      });
     },
     false
   );
@@ -186,6 +195,9 @@ window.onload = () => {
     "click",
     () => {
       cropper.setAspectRatio(16 / 9);
+      watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
+        cover.src = url;
+      });
     },
     false
   );
@@ -194,6 +206,9 @@ window.onload = () => {
     "click",
     () => {
       cropper.setAspectRatio(NaN);
+      watermarkImage(cropper.getCroppedCanvas(), mark).then((url) => {
+        cover.src = url;
+      });
     },
     false
   );
