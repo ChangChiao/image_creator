@@ -14,7 +14,7 @@ window.onload = () => {
   });
 
   prevBtn.addEventListener("click", () => {
-    cropper= null;
+    cropper = null;
     carousel.scrollTo(0, 0);
   });
 
@@ -97,17 +97,17 @@ window.onload = () => {
     const image = await createImageBitmap(blob);
     const pattern = context.createPattern(image, "no-repeat");
     // context.drawImage(image, 0, 0, 50, 50, canvasWidth - 50, canvasHeight - 50);
-
     // translating the watermark image to the bottom right corner
+    const rate = ( 0.001 * (canvasWidth / 4)).toFixed(2);
     context.translate(
-      canvasWidth - image.width * 0.3,
-      canvasHeight - image.height * 0.3
+      canvasWidth - image.width * rate,
+      canvasHeight - image.height * rate
     );
     context.rect(0, 0, canvasWidth, canvasHeight);
     // context.translate(canvasWidth - image.width, canvasHeight - image.height);
     // context.rect(0, 0, canvasWidth, canvasHeight);
-    context.rect(0, 0, 300, 300);
-    context.scale(0.3, 0.3);
+    // context.rect(0, 0, 300, 300);
+    context.scale(rate, rate);
     context.fillStyle = pattern;
     context.fill();
     return canvas.toDataURL("image/png");
