@@ -14,13 +14,14 @@ window.onload = () => {
   });
 
   prevBtn.addEventListener("click", () => {
+    cropper= null;
     carousel.scrollTo(0, 0);
   });
 
   const createImage = (url) => {
     const image = document.createElement("img");
     image.setAttribute("src", url);
-    document.querySelector("#cropped").appendChild(image);
+    document.querySelector("#cropped").replaceChildren(image);
   };
 
   uploadInput.addEventListener("change", (e) => {
